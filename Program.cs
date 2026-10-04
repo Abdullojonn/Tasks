@@ -7,17 +7,17 @@
         anna.Age = 20;
         anna.Score = 50;
 
-         
+        AddScore(anna, 30);
         Print(anna);
 
         System.Console.WriteLine();
 
         Student ivan = new Student();
-        ivan.Name = "Игор";
+        ivan.Name = "Иван";
         ivan.Age = 25;
         ivan.Score = 70;
 
-         
+        AddScore(ivan, 20);
         Print(ivan);
     }
 
@@ -29,6 +29,11 @@
         "\nScore: " + s.Score
         );
     }
+    
+    static void AddScore(Student s, int points)
+    {
+        s.Score = s.Score + points;
+    }
 }
 
 class Student
@@ -37,5 +42,3 @@ class Student
     public int Age;
     public int Score;
 }
-
-/*Почему метод Print, нудно внутри class Program*/
