@@ -2,28 +2,28 @@
 {
     static void Main(string[] args)
     {
-        Student st1 = new Student();
-        st1.Name = "Abdullo";
-        st1.Age = 18;
-        st1.Score = 90;
+        Student anna = new Student();
+        anna.Name = "Анна";
+        anna.Age = 20;
+        anna.Score = 50;
 
         System.Console.WriteLine(
-        "Name: " + st1.Name + 
-        "\nAge: " + st1.Age + 
-        "\nScore: " + st1.Score
+        "Name: " + anna.Name + 
+        "\nAge: " + anna.Age + 
+        "\nScore: " + anna.Score
         );
 
         System.Console.WriteLine();
 
-        Student st2 = new Student();
-        st2.Name = "Egor";
-        st2.Age = 28;
-        st2.Score = 95;
+        Student ivan = new Student();
+        ivan.Name = "Игор";
+        ivan.Age = 25;
+        ivan.Score = 70;
 
         System.Console.WriteLine(
-        "Name: " + st2.Name + 
-        "\nAge: " + st2.Age + 
-        "\nScore: " + st2.Score
+        "Name: " + ivan.Name + 
+        "\nAge: " + ivan.Age + 
+        "\nScore: " + ivan.Score
         );
     }
 }
