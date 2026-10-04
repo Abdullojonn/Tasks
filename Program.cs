@@ -7,11 +7,8 @@
         anna.Age = 20;
         anna.Score = 50;
 
-        System.Console.WriteLine(
-        "Name: " + anna.Name + 
-        "\nAge: " + anna.Age + 
-        "\nScore: " + anna.Score
-        );
+         
+        Print(anna);
 
         System.Console.WriteLine();
 
@@ -20,10 +17,16 @@
         ivan.Age = 25;
         ivan.Score = 70;
 
+         
+        Print(ivan);
+    }
+
+    static void Print(Student s)
+    {
         System.Console.WriteLine(
-        "Name: " + ivan.Name + 
-        "\nAge: " + ivan.Age + 
-        "\nScore: " + ivan.Score
+        "Name: " + s.Name + 
+        "\nAge: " + s.Age + 
+        "\nScore: " + s.Score
         );
     }
 }
@@ -34,3 +37,5 @@ class Student
     public int Age;
     public int Score;
 }
+
+/*Почему метод Print, нудно внутри class Program*/
