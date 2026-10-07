@@ -1,34 +1,34 @@
-﻿class Program
+﻿using System.Text;
+
+class Program
 {
     static void Main(string[] args)
     {
-        string s = "А роза упала на лапу Азора";
+        string s = "pwwkew";
+        string ans = "";
+        int mx = 0;
 
-        System.Console.WriteLine(IsPalindrome(s));
-
-    }
-    static bool IsPalindrome(string s)
-    {
-        s = s.Trim();
-        s = s.ToLowerInvariant();
-        
-        s = s.Replace(" ", "");
-        s = s.Replace(",", "");
-        s = s.Replace(".", "");
-        s = s.Replace("!", "");
-        
-        string b = s;
-        bool r = true;
-        for(int i = 0; i < s.Length / 2; i++)
+        for(int i = 0; i < s.Length; i++)
         {
-            int j = b.Length - 1 - i;
-
-            if(s[i] != b[j])
+            ans = "";
+            for(int j = i; j < s.Length; j++)
             {
-                r = false;
-                break;
+                if(!ans.Contains(s[j]))
+                {
+                    ans += s[j];
+                }
+
+                else
+                {
+                    break;
+                }
+                if(ans.Length >= mx)
+                {
+                    mx = ans.Length;
+                }
+                //System.Console.WriteLine(ans);
             }
         }
-        return r;
+        System.Console.WriteLine(mx);
     }
 }
