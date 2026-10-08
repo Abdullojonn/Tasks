@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Путь к .NET-разработчику</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+<style id="css">
+:root{--bg:#F5F4FA;--surface:#FFFFFF;--ink:#1D1930;--muted:#625D78;--line:#DCD8EA;--accent:#512BD4;--accent-ink:#FFFFFF;--accent-soft:#ECE7FD;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#13111C;--surface:#1C1929;--ink:#EDEAF7;--muted:#A7A1BE;--line:#322C48;--accent:#9F88FF;--accent-ink:#13111C;--accent-soft:#272143}}
+:root[data-theme="dark"]{--bg:#13111C;--surface:#1C1929;--ink:#EDEAF7;--muted:#A7A1BE;--line:#322C48;--accent:#9F88FF;--accent-ink:#13111C;--accent-soft:#272143}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:1rem;line-height:1.55}
+#app{max-width:44rem;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+h1,h2,.ring>span,.next-task{font-family:"Unbounded","Onest",system-ui,sans-serif}
+.top h1{font-size:clamp(1.35rem,4.5vw,1.75rem);font-weight:700;line-height:1.2;margin:0 0 .5rem;letter-spacing:-.01em}
+.lead{margin:0;color:var(--muted);max-width:36rem}
+.next{margin:2rem 0 1.5rem;padding:1.5rem 1.5rem 1.6rem;background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:0 14px 14px 0}
+.next-from{margin:0 0 .6rem;color:var(--muted);font-size:.9rem}
+.next-task{margin:0;font-size:clamp(1.15rem,3.6vw,1.5rem);font-weight:500;line-height:1.3;letter-spacing:-.01em}
+.next-hint{margin:.65rem 0 0;color:var(--muted);max-width:34rem}
+.btn{margin-top:1.15rem;font:inherit;font-weight:600;background:var(--accent);color:var(--accent-ink);border:0;border-radius:999px;padding:.65rem 1.25rem;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled,.link:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.overall{margin:0 0 2rem}
+.overall-row{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.92rem;margin-bottom:.45rem}
+.status{color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:999px;overflow:hidden}
+.bar>span{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .35s ease}
+.stages{list-style:none;margin:0;padding:0}
+.stage{position:relative;padding-left:0}
+.stage:not(:last-child)::before{content:"";position:absolute;left:1.125rem;top:2.6rem;bottom:-.2rem;width:2px;background:var(--line)}
+.stage.is-complete:not(:last-child)::before{background:var(--accent)}
+details{margin-bottom:.4rem}
+summary{list-style:none;display:flex;align-items:center;gap:.9rem;padding:.45rem 0;cursor:pointer;border-radius:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";margin-left:auto;flex:none;width:.55rem;height:.55rem;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-right:.35rem;transition:transform .2s ease}
+details[open]>summary::after{transform:rotate(-135deg)}
+.ring{flex:none;width:2.25rem;height:2.25rem;border-radius:50%;background:conic-gradient(var(--accent) var(--p),var(--line) 0);display:grid;place-items:center;position:relative;z-index:1}
+.ring>span{width:calc(100% - 6px);height:calc(100% - 6px);border-radius:50%;background:var(--bg);display:grid;place-items:center;font-size:.8rem;font-weight:700}
+.is-complete .ring>span{background:var(--accent);color:var(--accent-ink)}
+.stage-head{display:flex;flex-direction:column;min-width:0}
+.stage-title{font-weight:600;font-size:1.05rem;line-height:1.3}
+.is-current .stage-title{color:var(--accent)}
+.stage-meta{color:var(--muted);font-size:.86rem}
+.stage-note{margin:.2rem 0 .6rem 3.15rem;color:var(--muted);font-size:.92rem;max-width:34rem}
+.tasks{list-style:none;margin:.25rem 0 1rem 3.15rem;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.tasks>li+li{border-top:1px solid var(--line)}
+.task{display:flex;gap:.8rem;align-items:flex-start;padding:.8rem .95rem;cursor:pointer}
+.task input{appearance:none;-webkit-appearance:none;flex:none;margin:.15rem 0 0;width:1.25rem;height:1.25rem;border:2px solid var(--muted);border-radius:6px;display:grid;place-items:center;cursor:pointer;background:transparent}
+.task input::after{content:"";width:.35rem;height:.65rem;border-right:2.5px solid var(--accent-ink);border-bottom:2.5px solid var(--accent-ink);transform:rotate(45deg) translate(-1px,-1px);opacity:0}
+.task input:checked{background:var(--accent);border-color:var(--accent)}
+.task input:checked::after{opacity:1}
+.task input:disabled{cursor:not-allowed}
+.task-body{display:flex;flex-direction:column;min-width:0}
+.task-text{line-height:1.4}
+.task-hint{color:var(--muted);font-size:.88rem;margin-top:.2rem}
+.task input:checked+.task-body .task-text{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.foot{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line)}
+.link{font:inherit;font-size:.9rem;background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+@media (max-width:480px){.stage-note,.tasks{margin-left:0}.stage:not(:last-child)::before{display:none}.next{padding:1.25rem}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script type="application/json" id="data">{"done":[],"stages":[
+{"id":"s1","title":"Коллекции до конца","time":"около 2 недель","note":"Ты сейчас здесь. Цель: не только пользоваться коллекциями, но и понимать, как они устроены внутри.","tasks":[
+{"id":"s1t1","t":"Разобрать, как растёт List<T>","hint":"Добавляй элементы в цикле и выводи Capacity: увидишь удвоение внутреннего массива."},
+{"id":"s1t2","t":"Понять устройство Dictionary и HashSet","hint":"GetHashCode, Equals, бакеты, коллизии. Объясни ментору своими словами."},
+{"id":"s1t3","t":"Переопределить Equals и GetHashCode в своём классе","hint":"Положи объекты в HashSet без переопределения и с ним, сравни результат."},
+{"id":"s1t4","t":"Выучить сложность операций основных коллекций","hint":"List, Dictionary, HashSet, Queue, Stack, LinkedList: поиск, вставка, удаление."},
+{"id":"s1t5","t":"Решить 10 простых задач на коллекции","hint":"LeetCode или Codewars: Two Sum, Valid Anagram, Contains Duplicate и похожие."}]},
+{"id":"s2","title":"Основы C#","time":"6–8 недель","tasks":[
+{"id":"s2t1","t":"ООП: классы, интерфейсы, абстрактные классы, наследование, полиморфизм","hint":"Сделай маленькую модель, например разные способы оплаты с общим интерфейсом."},
+{"id":"s2t2","t":"SOLID: по примеру нарушения и исправления на каждый принцип"},
+{"id":"s2t3","t":"Generics: написать свой обобщённый класс с ограничением where","hint":"Например свой Stack<T> или Repository<T>."},
+{"id":"s2t4","t":"Делегаты, Func, Action, лямбды и события"},
+{"id":"s2t5","t":"IEnumerable и yield return: написать свой итератор"},
+{"id":"s2t6","t":"LINQ: 20 запросов к списку объектов","hint":"Where, Select, GroupBy, OrderBy, Any, First. Разберись с отложенным выполнением."},
+{"id":"s2t7","t":"Исключения: try/catch/finally и свои классы исключений"},
+{"id":"s2t8","t":"Современный C#: record, pattern matching, nullable reference types"},
+{"id":"s2t9","t":"async/await: Task, CancellationToken, типичные ошибки","hint":"Пойми, почему плохо писать .Result и async void."},
+{"id":"s2t10","t":"Мини-проект: консольное приложение с сохранением в JSON","hint":"Менеджер задач или учёт книг. Используй всё, что прошёл на этом этапе."}]},
+{"id":"s3","title":"Инструменты","time":"параллельно с этапом 2","note":"Не жди окончания основ: подключай эти задачи сразу.","tasks":[
+{"id":"s3t1","t":"Git: commit, branch, merge, pull request"},
+{"id":"s3t2","t":"Залить учебные задачи и мини-проект на GitHub"},
+{"id":"s3t3","t":"Освоить отладчик в Rider или Visual Studio","hint":"Breakpoints, step into и step over, просмотр переменных."},
+{"id":"s3t4","t":"dotnet CLI и NuGet: new, build, run, test, add package"},
+{"id":"s3t5","t":"Покрыть мини-проект юнит-тестами на xUnit"}]},
+{"id":"s4","title":"Базы данных","time":"4–5 недель","tasks":[
+{"id":"s4t1","t":"Установить PostgreSQL и подключиться к нему"},
+{"id":"s4t2","t":"SQL: 30 задач на SELECT, JOIN, GROUP BY, HAVING","hint":"Подойдёт любой онлайн-тренажёр SQL."},
+{"id":"s4t3","t":"Индексы, транзакции, нормализация"},
+{"id":"s4t4","t":"EF Core: DbContext, миграции, связи один-ко-многим и многие-ко-многим"},
+{"id":"s4t5","t":"Разобрать проблему N+1 и как её решает Include"}]},
+{"id":"s5","title":"ASP.NET Core Web API","time":"6–8 недель","note":"Главная цель всего пути: большинство вакансий для джунов именно про это.","tasks":[
+{"id":"s5t1","t":"Основы HTTP: методы, статус-коды, заголовки, REST"},
+{"id":"s5t2","t":"Первый Web API: CRUD на контроллерах со Swagger"},
+{"id":"s5t3","t":"Dependency Injection: Singleton, Scoped, Transient","hint":"Частый вопрос на собеседовании. Объясни разницу на примере."},
+{"id":"s5t4","t":"Middleware и пайплайн обработки запроса"},
+{"id":"s5t5","t":"Конфигурация и логирование","hint":"appsettings.json, переменные окружения, ILogger."},
+{"id":"s5t6","t":"Валидация и единая обработка ошибок"},
+{"id":"s5t7","t":"Аутентификация и авторизация через JWT"},
+{"id":"s5t8","t":"Интеграционные тесты для API"}]},
+{"id":"s6","title":"Архитектура и инфраструктура","time":"4–6 недель","tasks":[
+{"id":"s6t1","t":"Переписать свой API по слоям, затем по Clean Architecture"},
+{"id":"s6t2","t":"Паттерны: Repository, Factory, Strategy, Decorator"},
+{"id":"s6t3","t":"Docker и docker-compose: API и PostgreSQL одной командой"},
+{"id":"s6t4","t":"Кэширование через Redis"},
+{"id":"s6t5","t":"RabbitMQ: простой отправитель и получатель сообщений"},
+{"id":"s6t6","t":"GitHub Actions: сборка и тесты на каждый push"}]},
+{"id":"s7","title":"Портфолио и собеседования","time":"4–6 недель","tasks":[
+{"id":"s7t1","t":"Pet-проект 1: API магазина или бронирования","hint":"PostgreSQL, EF Core, JWT, тесты, Docker."},
+{"id":"s7t2","t":"Pet-проект 2: что-то с кэшем или очередью сообщений"},
+{"id":"s7t3","t":"README к каждому проекту: что делает, как запустить, стек"},
+{"id":"s7t4","t":"Повторить вопросы для джуна","hint":"Стек и куча, value и reference типы, boxing, GC, строки, Dictionary, async, SOLID, SQL."},
+{"id":"s7t5","t":"Составить резюме"},
+{"id":"s7t6","t":"Пройти 3 пробных собеседования","hint":"С ментором или знакомыми разработчиками."},
+{"id":"s7t7","t":"Начать откликаться на вакансии Junior .NET"}]}
+]}</script>
+<script id="app-js">
+(function(){
+  var HEAD='<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>Путь к .NET-разработчику</title>\n<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">\n';
+  var STORE_KEY='dotnet-roadmap-done-v1';
+  var VIEW_KEY='dotnet-roadmap-view-v1';
+  var state=JSON.parse(document.getElementById('data').textContent);
+  var done=new Set(state.done||[]);
+  var mode='pending', api=null, timer=null, dirty=false, retried=false, lastStatus='';
+  var app=document.getElementById('app');
+  var openStages=new Set();
+  var restoreY=null;
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function allTasks(){var out=[];state.stages.forEach(function(s){s.tasks.forEach(function(t){out.push({id:t.id,t:t.t,hint:t.hint,stage:s});});});return out;}
+  function nextTask(){var a=allTasks();for(var i=0;i<a.length;i++){if(!done.has(a[i].id))return a[i];}return null;}
+
+  try{var v=JSON.parse(sessionStorage.getItem(VIEW_KEY)||'null');if(v){(v.open||[]).forEach(function(id){openStages.add(id);});restoreY=v.y;sessionStorage.removeItem(VIEW_KEY);}}catch(e){}
+  if(!openStages.size){var n0=nextTask();if(n0)openStages.add(n0.stage.id);}
+
+  var STATUS={pending:'',saving:'Сохраняю…',saved:'Прогресс сохранён',local:'Прогресс хранится в этом браузере',readonly:'Только просмотр: отметки не сохранятся',slow:'Сохраню чуть позже',error:'Не удалось сохранить, попробуй отметить ещё раз'};
+  function setStatus(k){lastStatus=k;var el=document.getElementById('status');if(el)el.textContent=STATUS[k]||'';}
+  function ro(){return mode==='readonly'?' disabled':'';}
+
+  function render(){
+    var tasks=allTasks(),total=tasks.length,count=0;
+    tasks.forEach(function(t){if(done.has(t.id))count++;});
+    var next=nextTask(),pct=Math.round(count/total*100),h='';
+    h+='<header class="top"><h1>Путь к .NET-разработчику</h1><p class="lead">Задачи идут по порядку. Отмечай сделанное, и сверху всегда будет следующий шаг.</p></header>';
+    if(next){
+      var si=state.stages.indexOf(next.stage)+1;
+      h+='<section class="next" aria-labelledby="next-h"><p class="next-from">Следующий шаг, этап '+si+': '+esc(next.stage.title)+'</p><h2 id="next-h" class="next-task">'+esc(next.t)+'</h2>'+(next.hint?'<p class="next-hint">'+esc(next.hint)+'</p>':'')+'<button class="btn" type="button" data-act="done-next" data-id="'+next.id+'"'+ro()+'>Сделано, дальше</button></section>';
+    }else{
+      h+='<section class="next"><h2 class="next-task">Все задачи отмечены</h2><p class="next-hint">Дальше главное: откликаться на вакансии и ходить на собеседования.</p></section>';
+    }
+    h+='<div class="overall"><div class="overall-row"><span>'+count+' из '+total+' задач</span><span class="status" id="status" role="status" aria-live="polite"></span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'" aria-label="Общий прогресс"><span style="width:'+pct+'%"></span></div></div>';
+    h+='<ol class="stages">';
+    state.stages.forEach(function(s,i){
+      var sd=0;s.tasks.forEach(function(t){if(done.has(t.id))sd++;});
+      var sp=s.tasks.length?sd/s.tasks.length*100:0,complete=sd===s.tasks.length,cur=next&&next.stage===s;
+      h+='<li class="stage'+(complete?' is-complete':'')+(cur?' is-current':'')+'"><details data-stage="'+s.id+'"'+(openStages.has(s.id)?' open':'')+'><summary><span class="ring" style="--p:'+sp+'%"><span>'+(i+1)+'</span></span><span class="stage-head"><span class="stage-title">'+esc(s.title)+'</span><span class="stage-meta">'+sd+' из '+s.tasks.length+(s.time?', '+esc(s.time):'')+'</span></span></summary>';
+      if(s.note)h+='<p class="stage-note">'+esc(s.note)+'</p>';
+      h+='<ul class="tasks">';
+      s.tasks.forEach(function(t){
+        h+='<li><label class="task"><input type="checkbox" data-id="'+t.id+'"'+(done.has(t.id)?' checked':'')+ro()+'><span class="task-body"><span class="task-text">'+esc(t.t)+'</span>'+(t.hint?'<span class="task-hint">'+esc(t.hint)+'</span>':'')+'</span></label></li>';
+      });
+      h+='</ul></details></li>';
+    });
+    h+='</ol><footer class="foot"><button class="link" type="button" data-act="reset"'+ro()+'>Сбросить прогресс</button></footer>';
+    app.innerHTML=h;
+    setStatus(lastStatus);
+  }
+
+  function buildDoc(){
+    var data=JSON.stringify({done:Array.from(done),stages:state.stages}).replace(/</g,'\\u003c');
+    var css=document.getElementById('css').textContent;
+    var js=document.getElementById('app-js').textContent;
+    return '<!doctype html>\n<html lang="ru">\n<head>\n'+HEAD+'<style id="css">'+css+'</style>\n</head>\n<body>\n<main id="app"></main>\n<script type="application/json" id="data">'+data+'<\/script>\n<script id="app-js">'+js+'<\/script>\n</body>\n</html>\n';
+  }
+
+  function schedule(){
+    if(mode==='readonly')return;
+    if(mode==='pending'){dirty=true;return;}
+    if(mode==='local'){try{localStorage.setItem(STORE_KEY,JSON.stringify(Array.from(done)));}catch(e){}setStatus('local');return;}
+    setStatus('saving');clearTimeout(timer);timer=setTimeout(save,1200);
+  }
+
+  function save(){
+    if(mode!=='artifact'||!api)return;
+    try{sessionStorage.setItem(VIEW_KEY,JSON.stringify({y:window.scrollY,open:Array.from(openStages)}));}catch(e){}
+    api.publish(buildDoc()).then(function(){retried=false;setStatus('saved');}).catch(function(err){
+      var c=err&&err.code;
+      try{sessionStorage.removeItem(VIEW_KEY);}catch(e){}
+      if(c==='conflict')return;
+      if(['not_writer','not_granted','not_declared','consent_required','capability_disabled','capability_removed'].indexOf(c)>=0){mode='readonly';render();setStatus('readonly');return;}
+      if(c==='rate_limited'){setStatus('slow');clearTimeout(timer);timer=setTimeout(save,8000);return;}
+      if(!retried&&(c==='upstream_error'||!c)){retried=true;clearTimeout(timer);timer=setTimeout(save,1500+Math.random()*1500);return;}
+      setStatus('error');
+    });
+  }
+
+  function goLocal(){
+    mode='local';
+    try{var s=localStorage.getItem(STORE_KEY);if(s&&!dirty){JSON.parse(s).forEach(function(id){done.add(id);});render();}}catch(e){}
+    setStatus('local');
+    if(dirty){dirty=false;schedule();}
+  }
+
+  app.addEventListener('change',function(e){
+    var t=e.target;if(!t.matches('input[type=checkbox][data-id]'))return;
+    var id=t.getAttribute('data-id');
+    if(t.checked)done.add(id);else done.delete(id);
+    render();
+    var again=app.querySelector('input[data-id="'+id+'"]');if(again)again.focus();
+    schedule();
+  });
+  app.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-act]');if(!b||b.disabled)return;
+    var act=b.getAttribute('data-act');
+    if(act==='done-next'){
+      done.add(b.getAttribute('data-id'));
+      var n=nextTask();if(n)openStages.add(n.stage.id);
+      render();var nb=app.querySelector('button[data-act="done-next"]');if(nb)nb.focus();
+      schedule();
+    }else if(act==='reset'){
+      if(!window.confirm('Снять все отметки?'))return;
+      done.clear();openStages.clear();var n1=nextTask();if(n1)openStages.add(n1.stage.id);
+      render();schedule();
+    }
+  });
+  document.addEventListener('toggle',function(e){
+    var d=e.target;if(!d.matches||!d.matches('details[data-stage]'))return;
+    var id=d.getAttribute('data-stage');if(d.open)openStages.add(id);else openStages.delete(id);
+  },true);
+
+  render();
+  if(restoreY!=null)requestAnimationFrame(function(){window.scrollTo(0,restoreY);});
+
+  if(window.claude&&typeof window.claude.use==='function'){
+    window.claude.use('artifact').then(function(a){
+      if(a){api=a;mode='artifact';setStatus(dirty?'saving':'');if(dirty){dirty=false;schedule();}}
+      else goLocal();
+    },goLocal);
+  }else goLocal();
+})();
+</script>
+</body>
+</html>
